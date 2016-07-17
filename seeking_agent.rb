@@ -1,31 +1,25 @@
+require_relative "behavior_chooser"
+
 class SeekingAgent
   include Processing::Proxy
 
-  attr_accessor :position, :target, :max_speed
+  attr_accessor :position, :velocity, :max_velocity, :mass
 
-  def initialize(position, target, vec_class)
+  def initialize(position, max)
     @position = position
-    @target = target
-    @VecClass = vec_class
-    @max_speed = 2
+    @velocity = Vec2D.new 0, 0
+    @max_velocity = max
     @mass = 50
-    @velocity = vec_class.new 0, 0
     @img = load_image "topdown_car.png"
+    @steering = BehaviorChooser.new self
   end
 
-  def update
-    max_force = 100
-    desired_velocity = (@target - @position).normalize * @max_speed
-    steering = desired_velocity - @velocity
-    steering.set_mag(@max_speed){steering.mag > @max_speed}
-    steering = steering / @mass
-
-    @velocity = @velocity + steering
-    @velocity.set_mag(@max_speed){@velocity.mag > @max_speed}
-    @position += @velocity
+  def update(target)
+    @steering.seek target
+    @steering.update
   end
   #3 = CENTER
-  def draw(sketch)
+  def draw()
     push_matrix
     translate @position.x, @position.y
     rotate Math::atan2 @velocity.y, @velocity.x
