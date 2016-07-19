@@ -17,10 +17,20 @@ class Route
   end
 
   def draw
-    @points.each do |n|
-      stroke 0
+    @points.each.with_index do |n, i|
+      if i < @index
+        stroke 0
+      elsif i == @index
+        stroke 0, 255, 0
+      else
+        stroke 255, 0, 0
+      end
       stroke_weight 5
       point n.x, n.y
+      stroke_weight 1
+      stroke 180, 180, 180
+      no_fill
+      ellipse n.x, n.y, @dist*2, @dist*2
     end
   end
 
@@ -29,4 +39,12 @@ class Route
       @index +=1
     end
   end
+
+  def +(other_route)
+  end
+
+  def Route.from_bezier(curve, accuracy, dist = 25)
+    Route.new ((1..accuracy).map{|n| n.to_f / accuracy}.map{|x| curve.at_x x}.to_a), dist
+  end
+
 end

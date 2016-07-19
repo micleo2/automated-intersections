@@ -1,4 +1,3 @@
-require_relative "seeking_agent"
 require_relative "scenery"
 load_libraries :vecmath
 
