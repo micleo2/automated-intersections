@@ -14,11 +14,12 @@ class SeekingAgent
     @steering = BehaviorChooser.new self
   end
 
-  def update(target)
+  def update(target, dist)
+    # @steering.arrive target, dist
     @steering.seek target
     @steering.update
   end
-  #3 = CENTER
+
   def draw()
     push_matrix
     translate @position.x, @position.y
