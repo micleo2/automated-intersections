@@ -3,7 +3,7 @@ require_relative "behavior_chooser"
 class SeekingAgent
   include Processing::Proxy
 
-  attr_accessor :position, :velocity, :max_velocity, :mass
+  attr_accessor :position, :velocity, :max_velocity, :mass, :steering
 
   def initialize(position, max)
     @position = position
@@ -16,7 +16,7 @@ class SeekingAgent
 
   def update(target, dist)
     # @steering.arrive target, dist
-    @steering.seek target
+    # @steering.seek target
     @steering.update
   end
 

@@ -40,6 +40,10 @@ class Route
     end
   end
 
+  def reached_destination?
+    @index == (@points.length-1)
+  end
+
   def +(other_route)
   end
 
