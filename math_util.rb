@@ -20,7 +20,7 @@ module MathUtil
 
     def get_abc
       a = @second_point.y - @first_point.y
-      b = @first_point.x = @second_point.x
+      b = @first_point.x - @second_point.x
       c = a * @first_point.x + b * @first_point.y
       [a, b, c]
     end

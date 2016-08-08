@@ -12,15 +12,17 @@ end
 
 def draw
   mouse_vec = Vec2D.new mouse_x, mouse_y
+  @line_one.second_point = mouse_vec
+  @point = @line_one.point_of_intersection @line_two
   background 255
   Scenery::draw_road 100
   Scenery::draw_lanes
   @line_one.draw
   @line_two.draw
-  if @point.nil?
+  if @point.nil? #&& (@line_one.second_point - @point).mag < 10
     text "NO CROSSNG", width/2, height/2
   else
-    fill 0
-    ellipse @point.x, @point.y, 40, 40
+    fill 255, 0, 0
+    ellipse @point.x, @point.y, 4, 4
   end
 end

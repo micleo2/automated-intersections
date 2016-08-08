@@ -47,6 +47,10 @@ class Route
   def +(other_route)
   end
 
+  def <<(node)
+    add_point node
+  end
+
   def Route.from_bezier(curve, accuracy, dist = 25)
     Route.new ((1..accuracy).map{|n| n.to_f / accuracy}.map{|x| curve.at_x x}.to_a), dist
   end
