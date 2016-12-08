@@ -52,7 +52,8 @@ class Route
   end
 
   def Route.from_bezier(curve, accuracy, dist = 25)
-    Route.new ((1..accuracy).map{|n| n.to_f / accuracy}.map{|x| curve.at_x x}.to_a), dist
+    accuracy -= 1
+    Route.new ((0..accuracy).map{|n| n.to_f / accuracy}.map{|x| curve.at_x x}.to_a), dist
   end
 
 end

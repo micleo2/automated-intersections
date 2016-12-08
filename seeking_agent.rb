@@ -3,7 +3,7 @@ require_relative "behavior_chooser"
 class SeekingAgent
   include Processing::Proxy
 
-  attr_accessor :position, :velocity, :max_velocity, :mass, :steering
+  attr_accessor :position, :velocity, :max_velocity, :mass, :steering, :time_in_intersection
 
   def initialize(position, max)
     @position = position
@@ -12,6 +12,7 @@ class SeekingAgent
     @mass = 50
     @img = load_image "topdown_car.png"
     @steering = BehaviorChooser.new self
+    @time_in_intersection = 0
   end
 
   def update(target, dist)
