@@ -15,6 +15,24 @@ class SeekingAgent
     @time_in_intersection = 0
   end
 
+  def react_to(other_cars)
+    cars = other_cars.select{|c| c.object_id != self.object_id}
+    cars.each do |c|
+      if will_collide? c
+        puts "CRASH COURSE"
+        if @time_in_intersection <= c.time_in_intersection
+          @velocity *= 0.8
+        end
+      end
+    end
+  end
+
+  def will_collide?(other)
+    dist = (@position - other.position).mag
+    puts "the distance is #{dist}"
+    dist < 90
+  end
+
   def update(target, dist)
     # @steering.arrive target, dist
     # @steering.seek target
