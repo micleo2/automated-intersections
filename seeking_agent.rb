@@ -19,7 +19,6 @@ class SeekingAgent
     cars = other_cars.select{|c| c.object_id != self.object_id}
     cars.each do |c|
       if will_collide? c
-        puts "CRASH COURSE"
         if @time_in_intersection <= c.time_in_intersection
           @velocity *= 0.8
         end
@@ -29,7 +28,7 @@ class SeekingAgent
 
   def will_collide?(other)
     dist = (@position - other.position).mag
-    puts "the distance is #{dist}"
+    # puts "the distance is #{dist}"
     dist < 90
   end
 

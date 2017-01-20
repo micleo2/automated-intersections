@@ -15,6 +15,10 @@ def setup
   @all_cars = [@car, @mouse_follower]
 end
 
+def mouse_pressed
+  puts "[#{mouse_x}, #{mouseY}]"
+end
+
 def draw
   frame_rate 20
   background 255
