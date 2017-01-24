@@ -12,7 +12,7 @@ def setup
   size $width, $height
   @all_cars = []
   @spawner = CarSpawner.new @all_cars, 100, $width, $height
-  @all_cars << @spawner.create_car($width, $height)
+  @all_cars << @spawner.create_car
 end
 
 def mouse_pressed

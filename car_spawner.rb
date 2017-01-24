@@ -1,6 +1,5 @@
 require_relative "bezier_curve"
-# require_relative ""
-# load_libraries :vecmath
+
 class CarSpawner
   attr_accessor :critical_points
   def initialize(cars, dist_to_middle, w, h)
@@ -8,7 +7,7 @@ class CarSpawner
     @dist_to_middle = dist_to_middle
     @critical_points = []
     @critical_points << [Vec2D.new(w/2 + 35, h/2 + 105), Vec2D.new(w/2 + 35, h/2 - 105)]
-    # @critical_points << [entry, exit]
+    @critical_points << [Vec2D.new(w/2 + 115, h/2 - 40), Vec2D.new(w/2 - 115, h/2 - 40)]
     @w = w
     @h = h
   end
@@ -21,17 +20,22 @@ class CarSpawner
   end
 
   def create_bezier(entry, exit)
+    control_point = Vec2D.new(@w/2, @h/2)
+    if entry.y == exit.y
+      # control_point.y
+    end
     BezierCurve.new(entry, Vec2D.new(@w/2 + 35, @h/2), exit)
   end
 
   def create_location(entry, exit)
-    Vec2D.new(@w/2 + 35, @h/2 + 305)
+    dist = (entry - exit).normalize!
+    entry + (dist*200)
   end
 
-  def create_car(w, h)
+  def create_car
     curvature = 45
     points = rand_critical
-    bezier = create_bezier(*rand_critical)
+    bezier = create_bezier(*points)
     c = SeekingAgent.new(create_location(*points), 2)
     pth = Route.from_bezier bezier, 10
     DriverAgent.new(c, pth)
