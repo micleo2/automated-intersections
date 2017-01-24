@@ -39,8 +39,8 @@ class DriverAgent
   def draw
     no_fill
     stroke 0, 0, 0
-    ellipse *@agent.position, 100, 100
+    # ellipse *@agent.position, 100, 100
     @agent.draw
-    # @path.draw
+    @path.draw
   end
 end

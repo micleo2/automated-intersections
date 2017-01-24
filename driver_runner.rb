@@ -17,7 +17,7 @@ def setup
 end
 
 def mouse_pressed
-  puts "[#{mouse_x}, #{mouseY}]"
+  puts "[@w/2 - #{mouse_x - $width/2}, #{mouseY}]"
 end
 
 def draw
@@ -31,7 +31,7 @@ def draw
   @all_cars.delete_if{|c| c.path.reached_destination?}
   if @timer < 0
     @all_cars << @spawner.create_car
-    @timer = 50 + rand(50)
+    @timer = 45
   end
   @all_cars.each{|c| c.react_to @all_cars}
 end

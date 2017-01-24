@@ -8,6 +8,8 @@ class CarSpawner
     @critical_points = []
     @critical_points << [Vec2D.new(w/2 + 35, h/2 + 105), Vec2D.new(w/2 + 35, h/2 - 105)]
     @critical_points << [Vec2D.new(w/2 + 115, h/2 - 40), Vec2D.new(w/2 - 115, h/2 - 40)]
+    @critical_points << [Vec2D.new(w/2 - 90, h/2 + 39), Vec2D.new(w/2 + 130, h/2 + 39)]
+    @critical_points << [Vec2D.new(w/2 - 34, h/2 - 105), Vec2D.new(w/2 - 34, h/2 + 105)]
     @w = w
     @h = h
   end
@@ -21,10 +23,15 @@ class CarSpawner
 
   def create_bezier(entry, exit)
     control_point = Vec2D.new(@w/2, @h/2)
-    if entry.y == exit.y
-      # control_point.y
+    if is_line?(entry, exit)
+      # dir = (entry - exit).normalize!
+      control_point = (entry + exit) / 2
     end
-    BezierCurve.new(entry, Vec2D.new(@w/2 + 35, @h/2), exit)
+    BezierCurve.new(entry, control_point, exit)
+  end
+
+  def is_line?(entry, exit)
+    true
   end
 
   def create_location(entry, exit)
