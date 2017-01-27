@@ -35,13 +35,13 @@ class Route
   end
 
   def adjust_to(agent)
-    if (agent.position - current_point).mag < @dist && @index != @points.length-1
+    if (agent.position - current_point).mag < @dist && @index != @points.length
       @index +=1
     end
   end
 
-  def reached_destination?
-    @index == (@points.length-1)
+  def reached_destination?(agent)
+    @index == (@points.length-1) && (agent.position - current_point).mag < @dist
   end
 
   def +(other_route)

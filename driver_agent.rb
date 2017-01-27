@@ -10,7 +10,7 @@ class DriverAgent
 
   def update
     @path.adjust_to @agent
-    if @path.reached_destination?
+    if @path.reached_destination? @agent
       @agent.steering.arrive @path.current_point, 100
     else
       @agent.steering.seek @path.current_point
@@ -24,7 +24,7 @@ class DriverAgent
     cars.each do |c|
       if will_collide? c
         if @agent.time_in_intersection <= c.agent.time_in_intersection
-          @agent.velocity *= 0.8
+          @agent.velocity *= 0.76
         end
       end
     end
@@ -33,14 +33,13 @@ class DriverAgent
   def will_collide?(other)
     dist = (@agent.position - other.agent.position).mag
     # puts "the distance is #{dist}"
-    dist < 50
+    dist < 65
   end
 
   def draw
     no_fill
     stroke 0, 0, 0
-    # ellipse *@agent.position, 100, 100
     @agent.draw
-    @path.draw
+    # @path.draw
   end
 end

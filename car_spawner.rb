@@ -31,12 +31,22 @@ class CarSpawner
   end
 
   def is_line?(entry, exit)
-    true
+    entry.y == exit.y || entry.x == exit.x
   end
 
   def create_location(entry, exit)
     dist = (entry - exit).normalize!
     entry + (dist*200)
+  end
+
+  def pad_path(p)
+    target_points = p.points
+    exit, entry = target_points.last, target_points.first
+    dist = (exit - entry).normalize!
+    dist *= 200;
+    end_point = Vec2D.new(exit.x + dist.x, exit.y + dist.y)
+    p.points << end_point
+    p
   end
 
   def create_car
@@ -45,6 +55,7 @@ class CarSpawner
     bezier = create_bezier(*points)
     c = SeekingAgent.new(create_location(*points), 2)
     pth = Route.from_bezier bezier, 10
+    pad_path pth
     DriverAgent.new(c, pth)
   end
 end

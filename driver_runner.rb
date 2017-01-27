@@ -28,10 +28,10 @@ def draw
   Scenery::draw_lanes
   @all_cars.each(&:update)
   @all_cars.each(&:draw)
-  @all_cars.delete_if{|c| c.path.reached_destination?}
+  @all_cars.delete_if{|c| c.path.reached_destination? c.agent}
   if @timer < 0
     @all_cars << @spawner.create_car
-    @timer = 45
+    @timer = 40
   end
   @all_cars.each{|c| c.react_to @all_cars}
 end
