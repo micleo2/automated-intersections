@@ -21,6 +21,8 @@ class DriverAgent
     end
     @agent.steering.update
     @agent.time_in_intersection += 1
+    ang = Math::atan2 @agent.velocity.x, -@agent.velocity.y
+    @castbox.align_to ang
   end
 
   def react_to(other_cars)
@@ -42,27 +44,7 @@ class DriverAgent
     dist < 65
   end
 
-  def draw_shape
-    push_matrix
-    translate @agent.position.x, @agent.position.y
-    ang = Math::PI#Math::atan2 @agent.velocity.x, -@agent.velocity.y
-    # rotate ang
-    # # rect 0, 0, 30, 100
-    # if @is_braking
-    #   fill 255, 0, 0
-    # else
-    #   no_fill
-    # end
-    # @castbox.rotate_by ang
-    # @castbox.draw
-    pop_matrix
-    @castbox.rotate_by -Math::PI/4
-  end
-
   def draw
-    no_fill
-    stroke 0, 0, 0
-    draw_shape
     @agent.draw
     stroke 255, 0, 0
     stroke_weight 3
