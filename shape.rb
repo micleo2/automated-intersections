@@ -5,9 +5,6 @@ class Shape
 
   def initialize
     @verticies = []
-    @verticies << Vec2D.new(-35, -70)
-    @verticies << Vec2D.new(35, -70)
-    @verticies << Vec2D.new(0, 10)
     @old_theta = nil
   end
 
@@ -27,7 +24,6 @@ class Shape
       rotate_by theta
     else
       diff = theta - @old_theta
-      puts diff
       rotate_by diff
       @old_theta = theta
     end

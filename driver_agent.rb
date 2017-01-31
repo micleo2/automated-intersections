@@ -1,5 +1,5 @@
 #the system is a homogenus composition of DriverAgents
-require_relative "shape"
+require_relative "shape_factory"
 
 class DriverAgent
   include Processing::Proxy
@@ -8,7 +8,8 @@ class DriverAgent
   def initialize(agent, path)
     @agent = agent
     @path = path
-    @castbox = Shape.new
+    @castbox = ShapeFactory.create_triangle
+    @hitbox = ShapeFactory.create_rectangle
     @is_braking = false
   end
 
@@ -22,7 +23,7 @@ class DriverAgent
     @agent.steering.update
     @agent.time_in_intersection += 1
     ang = Math::atan2 @agent.velocity.x, -@agent.velocity.y
-    @castbox.align_to ang
+    [@castbox, @hitbox].each{|b| b.align_to ang}
   end
 
   def react_to(other_cars)
@@ -49,5 +50,7 @@ class DriverAgent
     stroke 255, 0, 0
     stroke_weight 3
     @castbox.verticies.each{|v| point v.x + @agent.position.x, v.y + @agent.position.y}
+    stroke 0, 0, 255
+    @hitbox.verticies.each{|v| point v.x + @agent.position.x, v.y + @agent.position.y}
   end
 end
