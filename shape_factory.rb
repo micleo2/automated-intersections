@@ -14,8 +14,8 @@ class ShapeFactory
       w = 30
       s.verticies << Vec2D.new(-w/2, -35)
       s.verticies << Vec2D.new(w/2, -35)
-      s.verticies << Vec2D.new(-w/2, 15)
       s.verticies << Vec2D.new(w/2, 15)
+      s.verticies << Vec2D.new(-w/2, 15)
       s
     end
   end

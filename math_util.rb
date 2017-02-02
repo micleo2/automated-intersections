@@ -1,6 +1,10 @@
 module MathUtil
   include Processing::Proxy
 
+  def MathUtil.perpendicular(vec)
+    Vec2D.new -vec.y, vec.x
+  end
+
   class Line
     attr_accessor :first_point, :second_point
     def initialize(first_point, second_point)
