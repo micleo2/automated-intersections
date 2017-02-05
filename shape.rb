@@ -12,6 +12,10 @@ class Shape
     @max = nil
   end
 
+  def to_a
+    @verticies.map{|v| [v.x, v.y]}
+  end
+
   def transform_by(x, y)
     @verticies.map! do |v|
       x_prime = v.x + x
