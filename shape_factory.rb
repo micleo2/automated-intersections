@@ -18,14 +18,5 @@ class ShapeFactory
       s.verticies << Vec2D.new(-w/2, 15)
       s
     end
-
-    def create_square
-      s = Shape.new
-      s.verticies << Vec2D.new(-20, -20)
-      s.verticies << Vec2D.new(20, -20)
-      s.verticies << Vec2D.new(20, 20)
-      s.verticies << Vec2D.new(-20, 20)
-      s
-    end
   end
 end

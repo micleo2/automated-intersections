@@ -1,4 +1,3 @@
-# require "clipper"
 require_relative "seeking_agent"
 require_relative "scenery"
 require_relative "route"
@@ -11,12 +10,8 @@ $width = 750
 $height = 900
 def setup
   size $width, $height
-  @cast = ShapeFactory.create_square.transform_by $width/2, $height/2
-  @hit = ShapeFactory.create_square.transform_by $width/2, $height/2 + 200
-  # @clip = Clipper.new
-  # @clip.add_subject_polygon @hit.to_a
-  # @clip.add_clip_polygon @cast.to_a
-  # p @clip.intersection
+  @cast = ShapeFactory.create_rectangle.transform_by $width/2, $height/2
+  @hit = ShapeFactory.create_triangle.transform_by $width/2, $height/2 + 200
 end
 
 def key_pressed
@@ -24,7 +19,6 @@ def key_pressed
   @cast.transform_by(0, 10) if key_code == 40
   @cast.transform_by(-10, 0) if key_code == 37
   @cast.transform_by(10, 0) if key_code == 39
-  @cast.rotate_by(Math::PI / 5) if key_code == 32
 end
 
 def draw
