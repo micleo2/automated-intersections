@@ -1,24 +1,11 @@
-require_relative "math_util"
-
 class Shape
   include Processing::Proxy
 
-  attr_accessor :verticies, :min, :max
+  attr_accessor :verticies
 
   def initialize
     @verticies = []
     @old_theta = nil
-    @min = nil
-    @max = nil
-  end
-
-  def transform_by(x, y)
-    @verticies.map! do |v|
-      x_prime = v.x + x
-      y_prime = v.y + y
-      Vec2D.new x_prime, y_prime
-    end
-    self
   end
 
   # x′=xcos(θ)−ysin(θ)
@@ -41,51 +28,6 @@ class Shape
       @old_theta = theta
     end
   end
-
-  def median_point
-    @verticies.reduce(&:+) / @verticies.length
-  end
-
-  def intersecting?(other)
-    true
-  end
-
-  def collide?(other)
-     @verticies.drop(1).each.with_index do |v1, i|
-       v0 = @verticies[i-1]
-       edge = Vec2D.new((v1.x - v0.x), (v1.y - v0.y))
-       axis = MathUtil::perpendicular edge
-       return false if separatedByAxis axis, other
-     end
-     # test separation axes of other polygon
-     other.verticies.drop(1).each.with_index do |v1, i|
-       v0 = other.verticies[i-1]
-       edge = Vec2D.new((v1.x - v0.x), (v1.y - v0.y));
-       axis = MathUtil::perpendicular edge
-       return false if separatedByAxis axis, other
-     end
-     true
-   end
-
-  def calculateInterval(axis)
-    @min = @max = (@verticies.first.dot axis)
-    @verticies.drop(1).each do |v|
-      d = v.dot axis
-      @min = d if d < @min
-      @max = d if d > @max
-    end
-  end
-
-  def intervalsSeparated(mina, maxa, minb, maxb)
-    (mina > maxb) || (minb > maxa)
-  end
-
-  def separatedByAxis(axis, poly)
-    calculateInterval axis
-    poly.calculateInterval axis
-    intervalsSeparated @min, @max, poly.min, poly.max
-  end
-
 
   def draw
     stroke_weight 1

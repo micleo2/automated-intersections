@@ -3,7 +3,7 @@ require_relative "shape_factory"
 
 class DriverAgent
   include Processing::Proxy
-  attr_accessor :agent, :path, :castbox, :hitbox
+  attr_accessor :agent, :path, :castbox
 
   def initialize(agent, path)
     @agent = agent
@@ -42,12 +42,7 @@ class DriverAgent
 
   def will_collide?(other)
     dist = (@agent.position - other.agent.position).mag
-    dist < 60
-    # if dist < 100
-    #   @castbox.intersecting? other.hitbox
-    # else
-    #   false
-    # end
+    dist < 65
   end
 
   def draw
