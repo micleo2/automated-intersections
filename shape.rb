@@ -8,6 +8,15 @@ class Shape
     @old_theta = nil
   end
 
+  def transform_by(x, y)
+    @verticies.map! do |v|
+      x_prime = v.x + x
+      y_prime = v.y + y
+      Vec2D.new x_prime, y_prime
+    end
+    self
+  end
+
   # x′=xcos(θ)−ysin(θ)
   # y′=xsin(θ)+ycos(θ)
   def rotate_by(theta)

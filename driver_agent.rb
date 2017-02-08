@@ -1,9 +1,9 @@
 #the system is a homogenus composition of DriverAgents
 require_relative "shape_factory"
-
+require_relative "math_util"
 class DriverAgent
   include Processing::Proxy
-  attr_accessor :agent, :path, :castbox
+  attr_accessor :agent, :path, :castbox, :hitbox
 
   def initialize(agent, path)
     @agent = agent
@@ -42,7 +42,12 @@ class DriverAgent
 
   def will_collide?(other)
     dist = (@agent.position - other.agent.position).mag
-    dist < 65
+    dist < 60
+    # if dist < 200
+    #   MathUtil::polygons_intersect? @hitbox, @castbox
+    # else
+    #   false
+    # end
   end
 
   def draw
