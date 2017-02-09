@@ -14,6 +14,7 @@ def setup
   @timer = 50
   @spawner = CarSpawner.new @all_cars, 100, $width, $height
   @all_cars << @spawner.create_car
+  @all_cars << @spawner.create_car
 end
 
 def mouse_pressed
@@ -22,7 +23,7 @@ end
 
 def draw
   @timer -= 1
-  frame_rate 23
+  frame_rate 20
   background 255
   Scenery::draw_road 150
   Scenery::draw_lanes

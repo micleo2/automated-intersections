@@ -31,8 +31,9 @@ class DriverAgent
     cars.each do |c|
       if will_collide? c
         if @agent.time_in_intersection <= c.agent.time_in_intersection
-          @agent.velocity *= 0.76
+          brake_from c
           @is_braking = true
+          # puts "GONNA HIT SOMETHING"
         else
           @is_braking = false
         end
@@ -40,14 +41,17 @@ class DriverAgent
     end
   end
 
+  def brake_from(other)
+    @agent.velocity *= 0.8
+  end
+
   def will_collide?(other)
     dist = (@agent.position - other.agent.position).mag
-    dist < 60
-    # if dist < 200
-    #   MathUtil::polygons_intersect? @hitbox, @castbox
-    # else
-    #   false
-    # end
+    if @path.index.zero?
+      dist < 60
+    else
+      MathUtil::polygons_intersect? other.castbox.transform_by(other.agent.position.x, other.agent.position.y), @castbox.transform_by(@agent.position.x, @agent.position.y)
+    end
   end
 
   def draw

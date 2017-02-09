@@ -1,20 +1,31 @@
 class Shape
   include Processing::Proxy
 
-  attr_accessor :verticies
+  attr_accessor :verticies, :old_theta
 
   def initialize
     @verticies = []
     @old_theta = nil
   end
 
-  def transform_by(x, y)
+  def transform_by!(x, y)
     @verticies.map! do |v|
       x_prime = v.x + x
       y_prime = v.y + y
       Vec2D.new x_prime, y_prime
     end
     self
+  end
+
+  def transform_by(x, y)
+    ret = Shape.new
+    ret.old_theta = @old_theta
+    ret.verticies = @verticies.map do |v|
+      x_prime = v.x + x
+      y_prime = v.y + y
+      Vec2D.new x_prime, y_prime
+    end
+    ret
   end
 
   # x′=xcos(θ)−ysin(θ)
@@ -36,6 +47,7 @@ class Shape
       rotate_by diff
       @old_theta = theta
     end
+    self
   end
 
   def draw

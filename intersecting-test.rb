@@ -12,7 +12,7 @@ $height = 900
 def setup
   size $width, $height
   @cast = ShapeFactory.create_rectangle.transform_by $width/2, $height/2
-  @hit = ShapeFactory.create_triangle.transform_by $width/2, $height/2 + 200
+  @hit = ShapeFactory.create_triangle.align_to(Math::PI/3).transform_by $width/2, $height/2 + 200
 end
 
 def key_pressed

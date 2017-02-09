@@ -1,6 +1,6 @@
 class Route
   include Processing::Proxy
-  attr_accessor :points
+  attr_accessor :points, :index
 
   def initialize(points, dist)
     @points = points
