@@ -1,6 +1,8 @@
 #the system is a homogenus composition of DriverAgents
 require_relative "shape_factory"
 require_relative "math_util"
+require_relative "config"
+
 class DriverAgent
   include Processing::Proxy
   attr_accessor :agent, :path, :castbox, :hitbox
@@ -28,21 +30,31 @@ class DriverAgent
 
   def react_to(other_cars)
     cars = other_cars.select{|c| c.object_id != self.object_id}
+    num_collided = 0
     cars.each do |c|
       if will_collide? c
         if @agent.time_in_intersection <= c.agent.time_in_intersection
           brake_from c
           @is_braking = true
-          # puts "GONNA HIT SOMETHING"
+          num_collided += 1
         else
           @is_braking = false
         end
       end
     end
+    @is_braking = false if num_collided == 0
   end
 
   def brake_from(other)
     @agent.velocity *= 0.8
+    if Config::debug?
+      stroke 0, 0, 255
+      # other.hitbox.verticies.each{|v| point v.x + other.agent.position.x, v.y + other.agent.position.y}
+      other.hitbox.transform_by(other.agent.position.x, other.agent.position.y).draw
+      stroke_weight 1
+      line @agent.position.x, @agent.position.y, other.agent.position.x, other.agent.position.y
+      text "braking...", @agent.position.x-20, @agent.position.y + 15
+    end
   end
 
   def will_collide?(other)
@@ -50,18 +62,22 @@ class DriverAgent
     if @path.index.zero?
       dist < 60
     else
-      MathUtil::polygons_intersect? other.castbox.transform_by(other.agent.position.x, other.agent.position.y), @castbox.transform_by(@agent.position.x, @agent.position.y)
+      MathUtil::polygons_intersect? other.hitbox.transform_by(other.agent.position.x, other.agent.position.y), @castbox.transform_by(@agent.position.x, @agent.position.y)
     end
   end
 
   def draw
     @agent.draw
-    if @is_braking
-      stroke 255, 0, 0
-      stroke_weight 3
-      @castbox.verticies.each{|v| point v.x + @agent.position.x, v.y + @agent.position.y}
-      stroke 0, 0, 255
-      @hitbox.verticies.each{|v| point v.x + @agent.position.x, v.y + @agent.position.y}
+    if Config::debug?
+      text_size 10
+      fill 0
+      text "#{@agent.time_in_intersection}", @agent.position.x, @agent.position.y - 15
+      if @is_braking
+        stroke 255, 0, 0
+        stroke_weight 3
+        # @castbox.verticies.each{|v| point v.x + @agent.position.x, v.y + @agent.position.y}
+        @castbox.transform_by(@agent.position.x, @agent.position.y).draw
+      end
     end
   end
 end

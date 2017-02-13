@@ -14,11 +14,6 @@ def setup
   @timer = 50
   @spawner = CarSpawner.new @all_cars, 100, $width, $height
   @all_cars << @spawner.create_car
-  @all_cars << @spawner.create_car
-end
-
-def mouse_pressed
-  puts "[@w/2 - #{mouse_x - $width/2}, #{mouseY}]"
 end
 
 def draw

@@ -51,8 +51,9 @@ class Shape
   end
 
   def draw
-    stroke_weight 1
+    stroke_weight 0.5
     begin_shape
+    no_fill
     @verticies.each{|v| vertex(v.x, v.y)}
     end_shape CLOSE
   end
