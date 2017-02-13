@@ -18,5 +18,14 @@ class ShapeFactory
       s.verticies << Vec2D.new(-w/2, 15)
       s
     end
+
+    def create_cast
+      s = Shape.new
+      s.verticies << Vec2D.new(-35, -70)
+      s.verticies << Vec2D.new(35, -70)
+      s.verticies << Vec2D.new(11, 7)
+      s.verticies << Vec2D.new(-11, 7)
+      s
+    end
   end
 end
