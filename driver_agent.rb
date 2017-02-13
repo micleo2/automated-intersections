@@ -56,10 +56,12 @@ class DriverAgent
 
   def draw
     @agent.draw
-    stroke 255, 0, 0
-    stroke_weight 3
-    @castbox.verticies.each{|v| point v.x + @agent.position.x, v.y + @agent.position.y}
-    stroke 0, 0, 255
-    @hitbox.verticies.each{|v| point v.x + @agent.position.x, v.y + @agent.position.y}
+    if @is_braking
+      stroke 255, 0, 0
+      stroke_weight 3
+      @castbox.verticies.each{|v| point v.x + @agent.position.x, v.y + @agent.position.y}
+      stroke 0, 0, 255
+      @hitbox.verticies.each{|v| point v.x + @agent.position.x, v.y + @agent.position.y}
+    end
   end
 end
