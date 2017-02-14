@@ -1,4 +1,7 @@
 require_relative "bezier_curve"
+require_relative "driver_agent"
+require_relative "seeking_agent"
+require_relative "route"
 
 class CarSpawner
   attr_accessor :critical_points
@@ -47,6 +50,15 @@ class CarSpawner
     end_point = Vec2D.new(exit.x + dist.x, exit.y + dist.y)
     p.points << end_point
     p
+  end
+
+  def create_car_from_points(points)
+    curvature = 45
+    bezier = create_bezier(*points)
+    c = SeekingAgent.new(create_location(*points), 2)
+    pth = Route.from_bezier bezier, 10
+    pad_path pth
+    DriverAgent.new(c, pth)
   end
 
   def create_car

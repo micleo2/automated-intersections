@@ -27,5 +27,17 @@ class ShapeFactory
       s.verticies << Vec2D.new(-11, 7)
       s
     end
+
+    def create_semi_circle
+      s = Shape.new
+      w = 40
+      s.verticies << Vec2D.new(w, 0)
+      s.verticies << Vec2D.new(-w, 0)
+      s.verticies << Vec2D.new(-w, -40)
+      s.verticies << Vec2D.new(-w*0.6, -75)
+      s.verticies << Vec2D.new(w*0.6, -75)
+      s.verticies << Vec2D.new(w, -40)
+      s
+    end
   end
 end
