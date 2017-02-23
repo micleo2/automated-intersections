@@ -5,13 +5,14 @@ require_relative "config"
 
 class DriverAgent
   include Processing::Proxy
-  attr_accessor :agent, :path, :castbox, :hitbox
+  attr_accessor :agent, :path, :castbox, :hitbox, :collide_box
 
   def initialize(agent, path)
     @agent = agent
     @path = path
     @castbox = ShapeFactory.create_triangle
     @hitbox = ShapeFactory.create_rectangle
+    @collide_box = ShapeFactory.create_bounds
     @is_braking = false
   end
 
@@ -25,7 +26,7 @@ class DriverAgent
     @agent.steering.update
     @agent.time_in_intersection += 1
     ang = Math::atan2 @agent.velocity.x, -@agent.velocity.y
-    [@castbox, @hitbox].each{|b| b.align_to ang}
+    [@castbox, @hitbox, @collide_box].each{|b| b.align_to ang}
   end
 
   def react_to(other_cars)
@@ -42,11 +43,12 @@ class DriverAgent
         end
       end
     end
+    @colliding = cars.any? {|c| crashed_into? c}
     @is_braking = false if num_collided == 0
   end
 
   def brake_from(other)
-    @agent.velocity *= 0.8
+    # @agent.velocity *= 0.8
     if Config::debug?
       stroke 0, 0, 255
       # other.hitbox.verticies.each{|v| point v.x + other.agent.position.x, v.y + other.agent.position.y}
@@ -55,6 +57,14 @@ class DriverAgent
       line @agent.position.x, @agent.position.y, other.agent.position.x, other.agent.position.y
       text "braking...", @agent.position.x-20, @agent.position.y + 15
     end
+  end
+
+  def crashed_into?(other)
+    dist = (@agent.position - other.agent.position).mag
+    if dist < 60
+      return MathUtil::polygons_intersect? other.collide_box.transform_by(other.agent.position.x, other.agent.position.y), @collide_box.transform_by(@agent.position.x, @agent.position.y)
+    end
+    false
   end
 
   def will_collide?(other)

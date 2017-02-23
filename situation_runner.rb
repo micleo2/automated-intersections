@@ -28,8 +28,8 @@ def draw
   background 255
   Scenery::draw_road 150
   Scenery::draw_lanes
+  @all_cars.each{|c| c.react_to @all_cars}
   @all_cars.each(&:update)
   @all_cars.each(&:draw)
   @all_cars.delete_if{|c| c.path.reached_destination? c.agent}
-  @all_cars.each{|c| c.react_to @all_cars}
 end

@@ -11,8 +11,8 @@ $width = 750
 $height = 900
 def setup
   size $width, $height
-  @cast = ShapeFactory.create_semi_circle.transform_by $width/2, $height/2
-  # @hit = ShapeFactory.create_rectangle.align_to(Math::PI/3).transform_by $width/2, $height/2 + 200
+  @cast = ShapeFactory.create_bounds.transform_by $width/2, $height/2
+  @img = load_image "topdown_car.png"
   @hit = ShapeFactory.create_rectangle.transform_by $width/2, $height/2 + 200
 end
 
@@ -27,8 +27,8 @@ def draw
   background 255
   Scenery::draw_road 150
   Scenery::draw_lanes
-  @cast.draw
-  @hit.draw
+  @cast.fill_draw 255, 0, 0
+  @hit.fill_draw 0, 0, 255
   if (MathUtil::polygons_intersect? @cast, @hit)
     fill 255, 0, 0
     text_size 40
@@ -36,4 +36,11 @@ def draw
   else
     fill 255, 255, 255
   end
+  push_matrix
+  translate $width/2, $height/2
+  rotate Math::atan2 -1, 0
+  image_mode CENTER
+  scale 0.04
+  image @img, 0, 0
+  pop_matrix
 end

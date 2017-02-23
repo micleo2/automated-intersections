@@ -7,6 +7,10 @@ class BehaviorChooser
     @steer_force = Vec2D.new 0, 0
   end
 
+  def brake_from(target)
+    @steer_force = @host.velocity
+  end
+
   def seek(target)
     desired_velocity = (target - @host.position)#.normalize * @host.max_velocity
     @steer_force += desired_velocity - @host.velocity
@@ -34,6 +38,7 @@ class BehaviorChooser
   end
 
   def update
+    # puts "update #{@steer_force}"
     @host.velocity = @host.velocity + @steer_force
     @host.velocity.set_mag(@host.max_velocity){@host.velocity.mag > @host.max_velocity}
     @host.position += @host.velocity

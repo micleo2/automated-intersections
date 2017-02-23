@@ -19,6 +19,17 @@ class ShapeFactory
       s
     end
 
+    def create_bounds
+      s = Shape.new
+      w = 14
+      h = 29
+      s.verticies << Vec2D.new(w/2, -h/2)
+      s.verticies << Vec2D.new(-w/2, -h/2)
+      s.verticies << Vec2D.new(-w/2, h/2)
+      s.verticies << Vec2D.new(w/2, h/2)
+      s
+    end
+
     def create_cast
       s = Shape.new
       s.verticies << Vec2D.new(-35, -70)
@@ -30,7 +41,7 @@ class ShapeFactory
 
     def create_semi_circle
       s = Shape.new
-      w = 40
+      w = 55
       s.verticies << Vec2D.new(w, 0)
       s.verticies << Vec2D.new(-w, 0)
       s.verticies << Vec2D.new(-w, -40)

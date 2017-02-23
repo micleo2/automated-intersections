@@ -14,6 +14,7 @@ def setup
   @timer = 50
   @spawner = CarSpawner.new @all_cars, 100, $width, $height
   @all_cars << @spawner.create_car
+  @time_distribution = []
 end
 
 def draw
@@ -22,9 +23,18 @@ def draw
   background 255
   Scenery::draw_road 150
   Scenery::draw_lanes
-  @all_cars.each(&:update)
   @all_cars.each(&:draw)
-  @all_cars.delete_if{|c| c.path.reached_destination? c.agent}
+  @all_cars.each(&:update)
+  @all_cars.delete_if do |c|
+    if c.path.reached_destination? c.agent
+      @time_distribution << c.agent.time_in_intersection
+      p @time_distribution
+      true
+    else
+      false
+    end
+  end
+
   if @timer < 0
     @all_cars << @spawner.create_car
     @timer = 45

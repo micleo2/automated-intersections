@@ -57,4 +57,12 @@ class Shape
     @verticies.each{|v| vertex(v.x, v.y)}
     end_shape CLOSE
   end
+
+  def fill_draw(r, g, b)
+    stroke_weight 0.5
+    begin_shape
+    fill r, g, b
+    @verticies.each{|v| vertex(v.x, v.y)}
+    end_shape CLOSE
+  end
 end
