@@ -7,13 +7,14 @@ class DriverAgent
   include Processing::Proxy
   attr_accessor :agent, :path, :castbox, :hitbox, :collide_box
 
-  def initialize(agent, path)
+  def initialize(agent, path, stats=nil)
     @agent = agent
     @path = path
     @castbox = ShapeFactory.create_triangle
     @hitbox = ShapeFactory.create_rectangle
     @collide_box = ShapeFactory.create_bounds
     @is_braking = false
+    @stats = stats
   end
 
   def update
@@ -43,12 +44,19 @@ class DriverAgent
         end
       end
     end
-    @colliding = cars.any? {|c| crashed_into? c}
+
+    new_colliding = cars.any? {|c| crashed_into? c}
+    on_collide_exit if (@colliding && !new_colliding)
+    @colliding = new_colliding
     @is_braking = false if num_collided == 0
   end
 
+  def on_collide_exit
+    @stats.crashes += 1
+  end
+
   def brake_from(other)
-    # @agent.velocity *= 0.8
+    @agent.velocity *= 0.8
     if Config::debug?
       stroke 0, 0, 255
       # other.hitbox.verticies.each{|v| point v.x + other.agent.position.x, v.y + other.agent.position.y}

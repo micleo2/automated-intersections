@@ -4,6 +4,8 @@ require_relative "route"
 require_relative "bezier_curve"
 require_relative "driver_agent"
 require_relative "car_spawner"
+require_relative "summary_statistics"
+require_relative "button"
 
 load_libraries :vecmath
 $width = 750
@@ -14,7 +16,15 @@ def setup
   @timer = 50
   @spawner = CarSpawner.new @all_cars, 100, $width, $height
   @all_cars << @spawner.create_car
-  @time_distribution = []
+  @stats = SummaryStatistics.new
+  @exit_button = Button.new 50, 50, 100, 45, "EXIT"
+end
+
+def mouse_pressed
+  @exit_button.on_click do
+    @stats.save_data
+    exit()
+  end
 end
 
 def draw
@@ -27,8 +37,7 @@ def draw
   @all_cars.each(&:update)
   @all_cars.delete_if do |c|
     if c.path.reached_destination? c.agent
-      @time_distribution << c.agent.time_in_intersection
-      p @time_distribution
+      @stats.wait_times << c.agent.time_in_intersection
       true
     else
       false
@@ -40,4 +49,5 @@ def draw
     @timer = 45
   end
   @all_cars.each{|c| c.react_to @all_cars}
+  @exit_button.draw
 end
