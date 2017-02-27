@@ -1,8 +1,15 @@
 module MathUtil
   include Processing::Proxy
+  @@rand_base = (0...8).map { (65 + rand(26)).chr }.join
+  @@id = 0
+
+  def MathUtil::should_save_frame?
+    @@id += 1
+    @@id.even?
+  end
 
   def MathUtil::unique_name
-    (0...8).map { (65 + rand(26)).chr }.join
+    return @@rand_base + (@@id/2).to_s
   end
 
   def MathUtil::polygons_intersect?(a, b)

@@ -63,11 +63,11 @@ class DriverAgent
   end
 
   def on_collide_enter
-    save_frame("screenshots/" + MathUtil::unique_name + ".png")
+    save_frame("screenshots/" + MathUtil::unique_name + ".png") if MathUtil::should_save_frame?
   end
 
   def brake_from(other)
-    # @agent.velocity *= 0.8
+    @agent.velocity *= 0.8
     if Config::debug?
       stroke 0, 0, 255
       # other.hitbox.verticies.each{|v| point v.x + other.agent.position.x, v.y + other.agent.position.y}
