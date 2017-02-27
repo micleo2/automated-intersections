@@ -6,8 +6,17 @@ class SummaryStatistics
   end
 
   def save_data
-    p "Wait times: #{@wait_times}"
-    p "Crashes: #{@crashes/2}"
-    p "Cars serviced: #{@wait_times.length}" #amount of cars serviced
+    puts "Wait times: #{@wait_times}"
+    puts "Average wait time: #{avg_time}"
+    puts "Crashes: #{@crashes/2}"
+    puts "Cars serviced: #{@wait_times.length}" #amount of cars serviced
+  end
+
+  def avg_time
+    if @wait_times.empty?
+      return 0
+    else
+      return @wait_times.reduce(&:+).fdiv @wait_times.length
+    end
   end
 end

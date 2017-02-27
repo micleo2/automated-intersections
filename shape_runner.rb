@@ -57,4 +57,11 @@ def draw
   end
   @all_cars.each{|c| c.react_to @all_cars}
   [@exit_button, @debug_button].each(&:draw)
+
+  if Config::debug?
+    fill 0, 255, 0
+    text "Average wait time: #{@stats.avg_time}", 15, $height - 150
+    text "Crashes: #{@stats.crashes/2}", 15, $height - 100
+    text "Cars serviced: #{@stats.wait_times.length}", 15, $height - 50
+  end
 end

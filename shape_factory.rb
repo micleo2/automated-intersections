@@ -23,10 +23,10 @@ class ShapeFactory
       s = Shape.new
       w = 14
       h = 29
-      s.verticies << Vec2D.new(w/2, -h/2)
-      s.verticies << Vec2D.new(-w/2, -h/2)
+      s.verticies << Vec2D.new(w/2-1, -h/2 + 5)
+      s.verticies << Vec2D.new(-w/2, -h/2 + 5)
       s.verticies << Vec2D.new(-w/2, h/2)
-      s.verticies << Vec2D.new(w/2, h/2)
+      s.verticies << Vec2D.new(w/2-1, h/2)
       s
     end
 

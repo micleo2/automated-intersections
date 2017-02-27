@@ -1,6 +1,10 @@
 module MathUtil
   include Processing::Proxy
 
+  def MathUtil::unique_name
+    (0...8).map { (65 + rand(26)).chr }.join
+  end
+
   def MathUtil::polygons_intersect?(a, b)
     polygons = [a, b]
     minA = maxA = projected = i = i1 = j = minB = maxB = nil

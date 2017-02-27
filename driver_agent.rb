@@ -46,13 +46,24 @@ class DriverAgent
     end
 
     new_colliding = cars.any? {|c| crashed_into? c}
+    if new_colliding
+      if Config::debug?
+        stroke 0, 0, 0
+        @collide_box.transform_by(@agent.position.x, @agent.position.y).draw
+      end
+    end
     on_collide_exit if (@colliding && !new_colliding)
+    on_collide_enter if (!@colliding && new_colliding)
     @colliding = new_colliding
     @is_braking = false if num_collided == 0
   end
 
   def on_collide_exit
     @stats.crashes += 1
+  end
+
+  def on_collide_enter
+    save_frame("screenshots/" + MathUtil::unique_name + ".png")
   end
 
   def brake_from(other)
@@ -83,6 +94,8 @@ class DriverAgent
     else
       MathUtil::polygons_intersect? other.hitbox.transform_by(other.agent.position.x, other.agent.position.y), @castbox.transform_by(@agent.position.x, @agent.position.y)
     end
+    # dist = (@agent.position - other.agent.position).mag
+    # dist < 65
   end
 
   def draw
