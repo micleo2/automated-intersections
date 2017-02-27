@@ -5,7 +5,7 @@ require_relative "config"
 
 class DriverAgent
   include Processing::Proxy
-  attr_accessor :agent, :path, :castbox, :hitbox, :collide_box
+  attr_accessor :agent, :path, :castbox, :hitbox, :collide_box, :stats
 
   def initialize(agent, path, stats=nil)
     @agent = agent
@@ -56,7 +56,7 @@ class DriverAgent
   end
 
   def brake_from(other)
-    @agent.velocity *= 0.8
+    # @agent.velocity *= 0.8
     if Config::debug?
       stroke 0, 0, 255
       # other.hitbox.verticies.each{|v| point v.x + other.agent.position.x, v.y + other.agent.position.y}

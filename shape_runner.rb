@@ -13,9 +13,8 @@ $height = 900
 def setup
   size $width, $height
   @all_cars = []
-  @timer = 50
+  @timer = 0
   @spawner = CarSpawner.new @all_cars, 100, $width, $height
-  @all_cars << @spawner.create_car
   @stats = SummaryStatistics.new
   @exit_button = Button.new 50, 50, 100, 45, "EXIT"
 end
@@ -45,7 +44,9 @@ def draw
   end
 
   if @timer < 0
-    @all_cars << @spawner.create_car
+    car = @spawner.create_car
+    car.stats = @stats
+    @all_cars << car
     @timer = 45
   end
   @all_cars.each{|c| c.react_to @all_cars}
