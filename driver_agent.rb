@@ -56,13 +56,14 @@ class DriverAgent
   end
 
   def brake_from(other)
-    @agent.velocity *= 0.8
+    # @agent.velocity *= 0.8
     if Config::debug?
       stroke 0, 0, 255
       # other.hitbox.verticies.each{|v| point v.x + other.agent.position.x, v.y + other.agent.position.y}
       other.hitbox.transform_by(other.agent.position.x, other.agent.position.y).draw
       stroke_weight 1
       line @agent.position.x, @agent.position.y, other.agent.position.x, other.agent.position.y
+      fill 0
       text "braking...", @agent.position.x-20, @agent.position.y + 15
     end
   end
@@ -95,6 +96,10 @@ class DriverAgent
         stroke_weight 3
         # @castbox.verticies.each{|v| point v.x + @agent.position.x, v.y + @agent.position.y}
         @castbox.transform_by(@agent.position.x, @agent.position.y).draw
+      end
+      if @colliding
+        fill 255, 0, 0
+        text "crash", @agent.position.x+20, @agent.position.y + 15
       end
     end
   end
