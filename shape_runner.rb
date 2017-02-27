@@ -6,6 +6,7 @@ require_relative "driver_agent"
 require_relative "car_spawner"
 require_relative "summary_statistics"
 require_relative "button"
+require_relative "config"
 
 load_libraries :vecmath
 $width = 750
@@ -17,12 +18,17 @@ def setup
   @spawner = CarSpawner.new @all_cars, 100, $width, $height
   @stats = SummaryStatistics.new
   @exit_button = Button.new 50, 50, 100, 45, "EXIT"
+  @debug_button = Button.new $width-150, 50, 100, 45, "#{Config::debug?}"
 end
 
 def mouse_pressed
   @exit_button.on_click do
     @stats.save_data
     exit()
+  end
+  @debug_button.on_click do
+    Config::toggle
+    @debug_button.message = "#{Config::debug?}"
   end
 end
 
@@ -50,5 +56,5 @@ def draw
     @timer = 45
   end
   @all_cars.each{|c| c.react_to @all_cars}
-  @exit_button.draw
+  [@exit_button, @debug_button].each(&:draw)
 end

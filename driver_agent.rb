@@ -56,7 +56,7 @@ class DriverAgent
   end
 
   def brake_from(other)
-    # @agent.velocity *= 0.8
+    @agent.velocity *= 0.8
     if Config::debug?
       stroke 0, 0, 255
       # other.hitbox.verticies.each{|v| point v.x + other.agent.position.x, v.y + other.agent.position.y}
@@ -86,7 +86,7 @@ class DriverAgent
 
   def draw
     @agent.draw
-    if Config::debug?
+    if Config.debug?
       text_size 10
       fill 0
       text "#{@agent.time_in_intersection}", @agent.position.x, @agent.position.y - 15
