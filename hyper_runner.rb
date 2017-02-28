@@ -33,31 +33,32 @@ def mouse_pressed
 end
 
 def draw
-  frame_rate 20
+  frame_rate 500
   background 255
   Scenery::draw_road 150
   Scenery::draw_lanes
-  @timer -= 1
-  @all_cars.each(&:draw)
-  @all_cars.each(&:update)
-  @all_cars.delete_if do |c|
-    if c.path.reached_destination? c.agent
-      @stats.wait_times << c.agent.time_in_intersection
-      true
-    else
-      false
+  300.times do
+    @timer -= 1
+    @all_cars.each(&:draw)
+    @all_cars.each(&:update)
+    @all_cars.delete_if do |c|
+      if c.path.reached_destination? c.agent
+        @stats.wait_times << c.agent.time_in_intersection
+        true
+      else
+        false
+      end
     end
-  end
 
-  if @timer < 0
-    car = @spawner.create_car
-    car.stats = @stats
-    @all_cars << car
-    @timer = 45
+    if @timer < 0
+      car = @spawner.create_car
+      car.stats = @stats
+      @all_cars << car
+      @timer = 45
+    end
+    @all_cars.each{|c| c.react_to @all_cars}
+    [@exit_button, @debug_button].each(&:draw)
   end
-  @all_cars.each{|c| c.react_to @all_cars}
-  [@exit_button, @debug_button].each(&:draw)
-
   if Config::debug?
     fill 0, 255, 0
     text "Average wait time: #{@stats.avg_time}", 15, $height - 150

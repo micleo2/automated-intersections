@@ -10,7 +10,7 @@ class DriverAgent
   def initialize(agent, path, stats=nil)
     @agent = agent
     @path = path
-    @castbox = ShapeFactory.create_triangle
+    @castbox = ShapeFactory.create_rectangle
     @hitbox = ShapeFactory.create_rectangle
     @collide_box = ShapeFactory.create_bounds
     @is_braking = false
@@ -63,7 +63,7 @@ class DriverAgent
   end
 
   def on_collide_enter
-    save_frame("screenshots/" + MathUtil::unique_name + ".png") if MathUtil::should_save_frame?
+    # save_frame("screenshots/" + MathUtil::unique_name + ".png") if MathUtil::should_save_frame?
   end
 
   def brake_from(other)

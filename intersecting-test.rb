@@ -11,7 +11,7 @@ $width = 750
 $height = 900
 def setup
   size $width, $height
-  @cast = ShapeFactory.create_bounds.transform_by $width/2, $height/2
+  @cast = ShapeFactory.create_cast.transform_by $width/2, $height/2
   @img = load_image "topdown_car.png"
   @hit = ShapeFactory.create_rectangle.transform_by $width/2, $height/2 + 200
 end
