@@ -19,11 +19,7 @@ class DriverAgent
 
   def update
     @path.adjust_to @agent
-    if @path.reached_destination? @agent
-      @agent.steering.arrive @path.current_point, 100
-    else
-      @agent.steering.seek @path.current_point
-    end
+    @agent.steering.seek @path.current_point
     @agent.steering.update
     @agent.time_in_intersection += 1
     ang = Math::atan2 @agent.velocity.x, -@agent.velocity.y
