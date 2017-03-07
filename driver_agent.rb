@@ -10,7 +10,7 @@ class DriverAgent
   def initialize(agent, path, stats=nil)
     @agent = agent
     @path = path
-    @castbox = ShapeFactory.create_rectangle
+    @castbox = ShapeFactory.create_triangle
     @hitbox = ShapeFactory.create_rectangle
     @collide_box = ShapeFactory.create_bounds
     @is_braking = false
@@ -23,8 +23,11 @@ class DriverAgent
     @agent.steering.seek @path.current_point
     @agent.steering.update
     @agent.time_in_intersection += 1
-    c = 45
+    c = 50
     @position_projection = MathUtil::Line.from_coordinates(0, 0, @agent.velocity.x * c, @agent.velocity.y * c)
+    # slope = @position_projection.second_point - @position_projection.first_point
+    # slope.normalize!
+    # @position_projection.first_point += slope * 20
     @hitbox = ShapeFactory.rect_from_line @position_projection
     ang = Math::atan2 @agent.velocity.x, -@agent.velocity.y
     [@castbox, @collide_box].each{|b| b.align_to ang}
@@ -56,6 +59,9 @@ class DriverAgent
     on_collide_enter if (!@colliding && new_colliding)
     @colliding = new_colliding
     @is_braking = false if num_collided == 0
+    if !@is_braking
+      @agent.max_velocity = 2
+    end
   end
 
   def on_collide_exit
@@ -63,11 +69,20 @@ class DriverAgent
   end
 
   def on_collide_enter
-    # save_frame("screenshots/" + MathUtil::unique_name + ".png") if MathUtil::should_save_frame?
+    save_frame("screenshots/" + MathUtil::unique_name + ".png") if MathUtil::should_save_frame?
   end
 
   def brake_from(other)
-    @agent.velocity *= 0.8
+    factor = 0.8
+    avg_point = MathUtil::average_point other.hitbox.transform_by(other.agent.position.x, other.agent.position.y), @castbox.transform_by(@agent.position.x, @agent.position.y)
+    dist = @path.current_point - other.path.current_point
+    if (@agent.position - avg_point).mag - (other.agent.position - avg_point).mag < -5
+      factor = 1.2
+      @agent.max_velocity = 2.4
+    else
+      @agent.max_velocity = 2
+    end
+    @agent.velocity *= factor
     if Config::debug?
       stroke 0, 0, 255
       # other.hitbox.verticies.each{|v| point v.x + other.agent.position.x, v.y + other.agent.position.y}
@@ -75,7 +90,14 @@ class DriverAgent
       stroke_weight 1
       line @agent.position.x, @agent.position.y, other.agent.position.x, other.agent.position.y
       fill 0
-      text "braking...", @agent.position.x-20, @agent.position.y + 15
+      if factor < 1
+        text "braking...", @agent.position.x-20, @agent.position.y + 15
+      else
+        text "accelerating", @agent.position.x-20, @agent.position.y + 15
+      end
+      stroke 0, 0, 255
+      no_fill
+      ellipse avg_point.x, avg_point.y, 5, 5
     end
   end
 

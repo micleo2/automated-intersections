@@ -12,6 +12,13 @@ module MathUtil
     return @@rand_base + (@@id/2).to_s
   end
 
+  def MathUtil::average_point(a, b)
+    p = Vec2D.new 0, 0
+    allVerts = a.verticies + b.verticies
+    allVerts.each { |v| p += v}
+    p /= allVerts.length
+  end
+
   def MathUtil::polygons_intersect?(a, b)
     polygons = [a, b]
     minA = maxA = projected = i = i1 = j = minB = maxB = nil
