@@ -50,5 +50,18 @@ class ShapeFactory
       s.verticies << Vec2D.new(w, -40)
       s
     end
+
+    def rect_from_line(line)
+      r = Shape.new
+      diff = (line.second_point - line.first_point).normalize
+      diff.normalize!
+      diff.x, diff.y = -diff.y, diff.x
+      diff *= 15
+      r.verticies << (line.second_point + diff)
+      r.verticies << (line.first_point + diff)
+      r.verticies << (line.first_point - diff)
+      r.verticies << (line.second_point - diff)
+      r
+    end
   end
 end

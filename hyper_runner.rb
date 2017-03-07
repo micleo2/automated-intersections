@@ -61,6 +61,7 @@ def draw
   end
   if Config::debug?
     fill 0, 255, 0
+    text "Crash Rate: #{((@stats.crashes/2).fdiv @stats.wait_times.length) * 100}", 15, $height - 200
     text "Average wait time: #{@stats.avg_time}", 15, $height - 150
     text "Crashes: #{@stats.crashes/2}", 15, $height - 100
     text "Cars serviced: #{@stats.wait_times.length}", 15, $height - 50

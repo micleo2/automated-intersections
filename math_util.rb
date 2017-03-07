@@ -66,6 +66,13 @@ module MathUtil
       (@second_point.y - @first_point.y) / (@second_point.x - @first_point.x)
     end
 
+    def transform_by(p)
+      l = Line.new(@first_point, @second_point)
+      l.first_point += p
+      l.second_point += p
+      l
+    end
+
     def draw
       $app.stroke 0
       $app.stroke_weight 1

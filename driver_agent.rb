@@ -5,7 +5,7 @@ require_relative "config"
 
 class DriverAgent
   include Processing::Proxy
-  attr_accessor :agent, :path, :castbox, :hitbox, :collide_box, :stats
+  attr_accessor :agent, :path, :castbox, :hitbox, :collide_box, :stats, :position_projection
 
   def initialize(agent, path, stats=nil)
     @agent = agent
@@ -15,6 +15,7 @@ class DriverAgent
     @collide_box = ShapeFactory.create_bounds
     @is_braking = false
     @stats = stats
+    @position_projection = MathUtil::Line.from_coordinates(0, 0, 0, 0)
   end
 
   def update
@@ -22,8 +23,11 @@ class DriverAgent
     @agent.steering.seek @path.current_point
     @agent.steering.update
     @agent.time_in_intersection += 1
+    c = 45
+    @position_projection = MathUtil::Line.from_coordinates(0, 0, @agent.velocity.x * c, @agent.velocity.y * c)
+    @hitbox = ShapeFactory.rect_from_line @position_projection
     ang = Math::atan2 @agent.velocity.x, -@agent.velocity.y
-    [@castbox, @hitbox, @collide_box].each{|b| b.align_to ang}
+    [@castbox, @collide_box].each{|b| b.align_to ang}
   end
 
   def react_to(other_cars)
